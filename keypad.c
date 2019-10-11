@@ -1,29 +1,29 @@
-#include <wiringPi.h> // GPIO Access Library 헤더파일 포함
+#include <wiringPi.h> // GPIO Access Library Header File
 
-#define LED_PIN_1 23 // LED 포트 핀 정의
+#define LED_PIN_1 23 // LED Port pin Definition
 #define LED_PIN_2 24
 #define LED_PIN_3 25
 
-#define KEYPAD_PB1 6 // KEYPAD 포트 핀 정의
+#define KEYPAD_PB1 6 // KEYPAD Port pin Definition
 #define KEYPAD_PB2 12
 #define KEYPAD_PB3 13
 
-#define LED_ON 1 // LED ON/OFF 정의
+#define LED_ON 1 // LED ON/OFF Definition
 #define LED_OFF 0
 
-#define MAX_LED_NUM 3 // LED 개수 및 KEYPAD 버튼 수 정의
+#define MAX_LED_NUM 3 // LED & Keypad Button amount Definition
 #define MAX_KEY_BT_NUM 3
 
 const int LedPinTable[3] = { 
-	LED_PIN_1, LED_PIN_2, LED_PIN_3 // LED 핀 테이블 선언
+	LED_PIN_1, LED_PIN_2, LED_PIN_3 // LED Pin Table Definition
 };
 
 const int KeypadTable[3] = {
-	KEYPAD_PB1, KEYPAD_PB2, KEYPAD_PB3 // KEYPAD 핀 테이블 선언
+	KEYPAD_PB1, KEYPAD_PB2, KEYPAD_PB3 // KEYPAD Pin Table Definition
 };
 
-/*KEYPAD 버튼 눌림을 확인하여
-nKeypadstate 상태 변수에 값을 저장*/
+/* to confirm the button press KEYPAD
+store the value in a variable nKeypadstate*/
 int KeypadRead()
 {
 	int i, nKeypadstate;
@@ -37,9 +37,8 @@ int KeypadRead()
 }
 
 
-/*해당하는 LED 번호와
-ON/OFF 명령 변수를 확인하여
-LED 핀에 HIGH/LOW 신호를 출력*/
+/*Check LED Pin number and ON/OFF command
+Output HIGH/LOW signal */
 void LedControl(int LedNum, int Cmd){
 
 	int i;
@@ -58,7 +57,7 @@ void LedControl(int LedNum, int Cmd){
 
 int main(void)
 {
-	if(wiringPiSetupGpio() == -1) // Wiring Pi의 GPIO를 사용하기 위한 설정
+	if(wiringPiSetupGpio() == -1) // Using GPIO to Wiring Pi Setting
 		return 1;
 
 
@@ -66,18 +65,18 @@ int main(void)
 	int nKeypadstate;
 	
 	for(i=0; i<MAX_LED_NUM; i++){
-		pinMode(LedPinTable[i], OUTPUT); // LED 핀 출력 설정
+		pinMode(LedPinTable[i], OUTPUT); // LED Pin Output Setting
 	}
 	
 	for(i=0; i<MAX_KEY_BT_NUM; i++){
-		pinMode(KeypadTable[i], INPUT); // KEYPAD 핀 입력 설정
+		pinMode(KeypadTable[i], INPUT); // KEYPAD pin Input Setting
 	}
 
 	while(1){
-		nKeypadstate = KeypadRead(); // KEYPAD로부터 버튼 입력을 읽어 상태를 변수에 저장
+		nKeypadstate = KeypadRead(); // Read button input from KEYPAD and save state to variable
 
-		for(i=0; i<MAX_KEY_BT_NUM; i++){  // KEYPAD 상태 변수를 확인하여
-			if((nKeypadstate & (1<<i))){  // LED ON/OFF 제어
+		for(i=0; i<MAX_KEY_BT_NUM; i++){  // check the KEYPAD state variable
+			if((nKeypadstate & (1<<i))){  // LED ON / OFF Control
 				LedControl(i, LED_ON);
 			}
 			else{
